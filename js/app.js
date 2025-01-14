@@ -23,6 +23,7 @@ let userToken = localStorage.getItem('token');  // Check for a token in localSto
 
 document.addEventListener('DOMContentLoaded', function() {
     // Periksa jika token ada di localStorage
+    console.log('ini adalah token', userToken)
     if (userToken) {
         // Jika sudah login, sembunyikan login/register button dan tampilkan logout button
         document.getElementById('addBlogBtn').style.display = 'block';
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         fetchBlogs();
     } else {
+        fetchBlogs();
         showLoginSection();
         document.getElementById('addBlogBtn').style.display = 'none';
         document.getElementById('loginBtn').style.display = 'block';
@@ -70,12 +72,13 @@ async function handleLogin(email, password) {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
+                'Authorization': `Bearer ${userToken}`,
             },
             body: new URLSearchParams({ email, password }),
         });
 
         const data = await res.json();
-
+        console.log(data)
         if (data.token) {
             // Setelah login sukses
             alert('Login successful!');
@@ -91,10 +94,11 @@ async function handleLogin(email, password) {
             fetchBlogs();  // Ambil data blog setelah login
 
         } else {
-            loginError.textContent = 'Invalid credentials';
+            console.log('masuk ek sini')
+            alert(data.message);
         }
     } catch (error) {
-        loginError.textContent = 'An error occurred. Please try again';
+        alert(data.message);
     }
 }
 
@@ -225,25 +229,31 @@ function displayBlogs(blogs) {
 
 // Menampilkan Form untuk menambah blog
 function showAddBlogForm() {
-    // Menampilkan form untuk menambah blog
+    if (!userToken) {
+        alert('You must be logged in to add a blog.');
+        return;
+    }
+
     const addBlogForm = `
         <div id="addBlogForm">
             <h2>Add Blog</h2>
             <input type="text" id="newBlogTitle" placeholder="Title" required>
             <textarea id="newBlogContent" placeholder="Content" required></textarea>
-            <button onclick="addBlog(document.getElementById('newBlogTitle').value, document.getElementById('newBlogContent').value)">Submit</button>
+            <button onclick="addBlog()">Submit</button>
             <button onclick="hideAddBlogForm()">Cancel</button>
         </div>
     `;
+
     document.getElementById('blogsList').innerHTML = addBlogForm;
+    document.getElementById('addBlogBtn').style.display = 'none';
 }
 
 // Menyembunyikan Form setelah submit atau cancel
 function hideAddBlogForm() {
     document.getElementById('addBlogForm').remove();
-    fetchBlogs();  // Refresh list of blogs
+    document.getElementById('addBlogBtn').style.display = 'block';
+    fetchBlogs();
 }
-
 
 // Add Blog
 async function addBlog() {
@@ -328,7 +338,6 @@ document.getElementById('updateBlogForm').addEventListener('submit', (event) => 
 
 // Update Blog
 async function updateBlog(blogId, title, content) {
-    console.log(blogId, title, content)
     if (!userToken) {
         alert('You must be logged in to update a blog.');
         return;
