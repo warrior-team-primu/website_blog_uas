@@ -21,25 +21,8 @@ logoutBtn.textContent = "Logout";
 
 let userToken = localStorage.getItem('token');  // Check for a token in localStorage
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Periksa jika token ada di localStorage
-    console.log('ini adalah token', userToken)
-    if (userToken) {
-        // Jika sudah login, sembunyikan login/register button dan tampilkan logout button
-        document.getElementById('addBlogBtn').style.display = 'block';
-        document.getElementById('loginBtn').style.display = 'none';
-        document.getElementById('registerBtn').style.display = 'none';
-        document.getElementById('logoutBtn').style.display = 'block';
-
-        fetchBlogs();
-    } else {
-        fetchBlogs();
-        showLoginSection();
-        document.getElementById('addBlogBtn').style.display = 'none';
-        document.getElementById('loginBtn').style.display = 'block';
-        document.getElementById('registerBtn').style.display = 'block';
-        document.getElementById('logoutBtn').style.display = 'none';
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    checkLoginStatus();
 
     // Toggle Navbar on mobile
     const hamburger = document.getElementById('hamburger');
@@ -49,16 +32,38 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Show Register Section
-    document.getElementById('registerBtn').addEventListener('click', () => {
-        showRegisterSection();
-    });
+    document.getElementById('registerBtn').addEventListener('click', showRegisterSection);
 
     // Show Login Section
-    document.getElementById('loginBtn').addEventListener('click', () => {
-        showLoginSection();
-    });
+    document.getElementById('loginBtn').addEventListener('click', showLoginSection);
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
 });
 
+// Check login status
+function checkLoginStatus() {
+    if (localStorage.getItem('token')) {
+        userToken = localStorage.getItem('token');
+        document.getElementById('loginBtn').style.display = 'none';
+        document.getElementById('registerBtn').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'block';
+        document.getElementById('addBlogBtn').style.display = 'block';
+        hideForms();
+        fetchBlogs();
+    } else {
+        document.getElementById('loginBtn').style.display = 'block';
+        document.getElementById('registerBtn').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'none';
+        document.getElementById('addBlogBtn').style.display = 'none';
+        fetchBlogs();
+    }
+}
+
+function hideForms() {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('registerSection').style.display = 'none';
+}
 
 // Login function
 async function handleLogin(email, password) {
@@ -89,6 +94,7 @@ async function handleLogin(email, password) {
             document.getElementById('loginBtn').style.display = 'none';
             document.getElementById('registerBtn').style.display = 'none';
             document.getElementById('logoutBtn').style.display = 'block';
+            document.getElementById('addBlogBtn').style.display = 'block';
 
             loginSection.style.display = 'none';
             fetchBlogs();  // Ambil data blog setelah login
@@ -102,7 +108,6 @@ async function handleLogin(email, password) {
     }
 }
 
-// Register function
 // Register function
 async function handleRegister(name, email, password, confirmPassword) {
     const registerError = document.getElementById("registerError");
@@ -190,8 +195,8 @@ function showLoginSection() {
 
 // Show register section
 function showRegisterSection() {
-    registerSection.style.display = 'block';
-    loginSection.style.display = 'none';
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('registerSection').style.display = 'block';
 }
 
 // Fetch Blogs from API (after login)
@@ -408,14 +413,9 @@ function handleLogout() {
     localStorage.removeItem('token');
     userToken = null;
 
-    // Menyembunyikan tombol logout dan menampilkan tombol login
-    document.getElementById('logoutBtn').style.display = 'none';
-    document.getElementById('loginBtn').style.display = 'block';
-    document.getElementById('registerBtn').style.display = 'block';
-
     // Kembali ke halaman login
     alert('You have successfully logged out.');
-    showLoginSection();
+    checkLoginStatus();
 }
 
 // Event listener untuk tombol logout
