@@ -6,13 +6,14 @@
 }
 
 html {
-    font-size: 100%; /* Default font size for scalable units */
+    font-size: 100%;
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     line-height: 1.6;
-    background-color: #f4f4f4;
+    background-color: #f0f2f5;
+    color: #333;
 }
 
 img {
@@ -21,7 +22,9 @@ img {
 }
 
 button {
-    font-family: inherit; /* Ensure button text uses the same font as body */
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
 }
 
 a {
@@ -35,8 +38,12 @@ a {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #333;
+    background-color: #0078d7;
     color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 999;
 }
 
 .navbar .logo a {
@@ -48,16 +55,51 @@ a {
 .nav-links {
     display: flex;
     list-style-type: none;
+    transition: all 0.3s ease-in-out;
 }
 
+/* Hide Logout by Default */
+#logoutBtn {
+    display: none;
+}
+
+/* Show Logout Button when Logged In */
+.logged-in #logoutBtn {
+    display: inline-block;
+}
+
+
+/* Navbar Links (Uniform Size) */
 .nav-links li {
-    margin-left: 2rem;
+    margin: 0;
+    list-style: none;
 }
 
 .nav-links li a {
     color: white;
     font-size: 1rem;
+    padding: 0.8rem 1.5rem; /* Samakan ukuran padding */
+    border-radius: 4px;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s;
 }
+
+.nav-links li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffcc00;
+}
+
+.nav-links li a.active {
+    background-color: #ffcc00;
+    color: #333;
+}
+
+.navbar .nav-links li a {
+    width: 100px; /* Samakan lebar setiap link */
+    text-align: center;
+}
+
 
 .hamburger {
     display: none;
@@ -66,7 +108,6 @@ a {
     justify-content: space-between;
     width: 30px;
     height: 21px;
-    position: relative;
 }
 
 .hamburger .line {
@@ -88,53 +129,106 @@ a {
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
-.hamburger::after {
-    content: 'Menu';
+.nav-links.active {
+    display: flex;
+    flex-direction: column;
     position: absolute;
-    left: -9999px;
-    visibility: hidden;
+    top: 60px;
+    right: 0;
+    background-color: #0078d7;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.hamburger:focus::after {
-    left: 10px;
-    visibility: visible;
+@media (max-width: 768px) {
+    .nav-links li a {
+        width: 100%;
+        padding: 1rem;
+    }
+
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #0078d7, #00c4cc);
+    color: white;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.cta-btn {
+    padding: 0.8rem 2rem;
+    background-color: #ff6600;
+    color: white;
+    border-radius: 50px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.cta-btn:hover {
+    background-color: #e65c00;
 }
 
 /* Form Section */
 .form-section {
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: white;
     border-radius: 8px;
     max-width: 400px;
-    margin: 0 auto;
+    margin: 40px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 12px;
+    margin-bottom: 15px;
     border-radius: 4px;
     border: 1px solid #ccc;
 }
 
 input:focus {
-    border-color: #4CAF50;
+    border-color: #0078d7;
     outline: none;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    box-shadow: 0 0 5px rgba(0, 120, 215, 0.5);
 }
 
 button {
     width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
+    padding: 12px;
+    background-color: #0078d7;
     color: white;
-    border: none;
     border-radius: 4px;
-    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #005bb5;
 }
 
 button.cancel {
@@ -142,7 +236,7 @@ button.cancel {
 }
 
 button.cancel:hover {
-    background-color: #e53935;
+    background-color: #d32f2f;
 }
 
 .error-message {
@@ -169,37 +263,71 @@ button.cancel:hover {
 
 .blogs-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
 }
 
 .blog-item {
     background-color: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
 .blog-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.blog-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.blog-item-content {
+    padding: 1.5rem;
 }
 
 .blog-item h3 {
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
 }
 
 .blog-item p {
     font-size: 1rem;
     color: #555;
+    margin-bottom: 1rem;
 }
 
-.blog-item img {
-    width: 100%;
-    border-radius: 4px;
-    margin-bottom: 1rem;
+.read-more-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #0078d7;
+    color: white;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.read-more-btn:hover {
+    background-color: #005bb5;
+}
+
+/* Load More Button */
+.load-more-btn {
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    background-color: #ff6600;
+    color: white;
+    border-radius: 50px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.load-more-btn:hover {
+    background-color: #e65c00;
 }
 
 /* Responsive Styles */
@@ -234,6 +362,10 @@ button.cancel:hover {
     .hero p {
         font-size: 1rem;
     }
+
+    .blog-item img {
+        height: 150px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -249,4 +381,8 @@ button.cancel:hover {
     .blog-item p {
         font-size: 0.9rem;
     }
-}
+
+    .read-more-btn {
+        font-size: 0.8rem;
+    }
+} 
