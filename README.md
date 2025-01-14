@@ -1,7 +1,7 @@
 # website_blog_uas
 
 ## 📌 Nama Kelompok
-Nama Kelompok: [Nama Kelompok Anda]
+Nama Kelompok:
 Anggota:
 - Gede Khrisna Aryana Maker 2201010048
 - Putu Ayu Mas Dyah Savitri Dewi 2201010063
