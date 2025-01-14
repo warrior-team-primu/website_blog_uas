@@ -2,7 +2,6 @@
 
 ## 📌 Nama Kelompok
 Nama Kelompok:
-Anggota:
 - Gede Khrisna Aryana Maker 2201010048
 - Putu Ayu Mas Dyah Savitri Dewi 2201010063
 - Ni nyoman ayu tri setiawati 2201010055
