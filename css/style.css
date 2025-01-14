@@ -5,11 +5,23 @@
     box-sizing: border-box;
 }
 
-/* Basic layout settings */
+html {
+    font-size: 100%; /* Default font size for scalable units */
+}
+
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     background-color: #f4f4f4;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+button {
+    font-family: inherit; /* Ensure button text uses the same font as body */
 }
 
 a {
@@ -54,12 +66,38 @@ a {
     justify-content: space-between;
     width: 30px;
     height: 21px;
+    position: relative;
 }
 
 .hamburger .line {
     background-color: white;
     height: 3px;
     width: 100%;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active .line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active .line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active .line:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.hamburger::after {
+    content: 'Menu';
+    position: absolute;
+    left: -9999px;
+    visibility: hidden;
+}
+
+.hamburger:focus::after {
+    left: 10px;
+    visibility: visible;
 }
 
 /* Form Section */
@@ -79,6 +117,12 @@ input {
     border: 1px solid #ccc;
 }
 
+input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
 button {
     width: 100%;
     padding: 10px;
@@ -93,6 +137,14 @@ button:hover {
     background-color: #45a049;
 }
 
+button.cancel {
+    background-color: #f44336;
+}
+
+button.cancel:hover {
+    background-color: #e53935;
+}
+
 .error-message {
     color: red;
     font-size: 14px;
@@ -103,7 +155,6 @@ button:hover {
 .error-message.visible {
     display: block;
 }
-
 
 /* Blog Section */
 .blogs {
@@ -127,6 +178,12 @@ button:hover {
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.blog-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .blog-item h3 {
@@ -137,6 +194,12 @@ button:hover {
 .blog-item p {
     font-size: 1rem;
     color: #555;
+}
+
+.blog-item img {
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 1rem;
 }
 
 /* Responsive Styles */
@@ -170,5 +233,20 @@ button:hover {
 
     .hero p {
         font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-section {
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    .blog-item h3 {
+        font-size: 1.4rem;
+    }
+
+    .blog-item p {
+        font-size: 0.9rem;
     }
 }
