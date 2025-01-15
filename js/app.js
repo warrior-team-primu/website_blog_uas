@@ -348,18 +348,24 @@ async function updateBlog(blogId, title, content) {
         return;
     }
 
+    // Membuat FormData untuk update blog
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('_method', 'PUT');  // Menggunakan metode PUT via FormData
+
     try {
         const res = await fetch(`${apiBaseUrl}/blog/${blogId}`, {
-            method: 'put',
+            method: 'POST',  // Gunakan POST karena FormData mengirim _method PUT
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${userToken}`,
             },
-            body: JSON.stringify({ title, content }),
+            body: formData,
         });
 
         const data = await res.json();
-        console.log(data)
+        console.log(data);
         if (data) {
             alert('Blog updated successfully');
             fetchBlogs();  // Refresh the blog list
